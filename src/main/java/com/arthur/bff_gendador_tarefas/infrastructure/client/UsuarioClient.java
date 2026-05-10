@@ -5,7 +5,6 @@ import com.arthur.bff_gendador_tarefas.business.dto.EnderecoDTO;
 import com.arthur.bff_gendador_tarefas.business.dto.TelefoneDTO;
 import com.arthur.bff_gendador_tarefas.business.dto.UsuarioDTO;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "usuario", url = "${usuario.url}")
