@@ -1,4 +1,4 @@
-package com.arthur.bff_gendador_tarefas.business.dto;
+package com.arthur.bff_gendador_tarefas.business.dto.in;
 
 import lombok.*;
 
@@ -8,9 +8,9 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 
-public class EnderecoDTO {
+public class EnderecoDTORequest {
 
-    private Long id;
+
     private String rua;
     private Long numero;
     private String complemento;
