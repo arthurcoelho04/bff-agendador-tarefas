@@ -84,7 +84,7 @@ public class UsuarioController {
     @Operation(summary = "Atualiza endereco do usuario",
             description = "Atualiza endereco de usuario")
     @ApiResponse(responseCode = "200", description = "Endereco atualizado com sucesso")
-    @ApiResponse(responseCode = "404", description = "Usuario nao encontrado")
+    @ApiResponse(responseCode = "404", description = "Endereco nao encontrado")
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
     public ResponseEntity<EnderecoDTOResponse> atualizaEndereco(@RequestBody EnderecoDTORequest dto,
                                                                 @RequestParam("id") Long id,
@@ -97,7 +97,7 @@ public class UsuarioController {
     @Operation(summary = "Atualiza telefone do usuario",
             description = "Atualiza telefone de usuario")
     @ApiResponse(responseCode = "200", description = "Telefone atualizado com sucesso")
-    @ApiResponse(responseCode = "404", description = "Usuario nao encontrado")
+    @ApiResponse(responseCode = "404", description = "Telefone nao encontrado")
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
     public ResponseEntity<TelefoneDTOResponse> atualizaTelefone(@RequestBody TelefoneDTORequest dto,
                                                                 @RequestParam("id") Long id,
@@ -110,7 +110,7 @@ public class UsuarioController {
     @Operation(summary = "salva endereco do usuario",
             description = "salva endereco de usuario")
     @ApiResponse(responseCode = "200", description = "endereco salvo com sucesso")
-    @ApiResponse(responseCode = "404", description = "Usuario nao encontrado")
+    @ApiResponse(responseCode = "404", description = "Endereco nao encontrado")
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
         public ResponseEntity<EnderecoDTOResponse> cadastraEndereco(@RequestBody EnderecoDTORequest dto,
                                                                     @RequestHeader(name = "authorization",
@@ -122,7 +122,7 @@ public class UsuarioController {
     @Operation(summary = "salva telefone do usuario",
             description = "salva telefone de usuario")
     @ApiResponse(responseCode = "200", description = "Telefone salvo com sucesso")
-    @ApiResponse(responseCode = "404", description = "Usuario nao encontrado")
+    @ApiResponse(responseCode = "404", description = "UTelefone nao encontrado")
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
     public ResponseEntity<TelefoneDTOResponse> cadastraTelefone(@RequestBody TelefoneDTORequest dto,
                                                                 @RequestHeader(name = "authorization", required = false) String token) {
