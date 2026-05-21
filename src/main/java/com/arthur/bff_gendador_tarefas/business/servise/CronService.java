@@ -4,6 +4,7 @@ import com.arthur.bff_gendador_tarefas.business.dto.in.LoginDTORequest;
 import com.arthur.bff_gendador_tarefas.business.dto.out.TarefasDTOResponse;
 import com.arthur.bff_gendador_tarefas.business.enums.StatusNotificacaoEnum;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-
+@Slf4j
 public class CronService {
 
     private final TarefasService tarefasService;
@@ -30,16 +31,19 @@ public class CronService {
 
     public void buscaTarefasProximaHora() {
         String token = login(converterParaRequestDTO());
-        LocalDateTime horaAtual = LocalDateTime.now().plusHours(1);
-        LocalDateTime horaFutura = LocalDateTime.now().plusHours(1).plusMinutes(5);
+        log.info("iniciada a busca de tarefas");
+        LocalDateTime horaFutura = LocalDateTime.now().plusHours(1);
+        LocalDateTime horaFuturaCinco = LocalDateTime.now().plusHours(1).plusMinutes(5);
 
         List<TarefasDTOResponse> listaTarefas =
-                tarefasService.buscarTarefasAgendadasPorPeriodo(horaAtual, horaFutura, token);
-
+                tarefasService.buscarTarefasAgendadasPorPeriodo(horaFutura, horaFuturaCinco, token);
+        log.info("listaTarefas: " + listaTarefas);
         listaTarefas.forEach(tarefas -> {
             emailService.enviarEmail(tarefas);
+            log.info("email enviado: " + tarefas.getEmailUsuario());
             tarefasService.alterarStatus(StatusNotificacaoEnum.NOTIFICADO, tarefas.getId(), token);
         });
+        log.info("finalizada a busca de tarefas");
     }
 
 
