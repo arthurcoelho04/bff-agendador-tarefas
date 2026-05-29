@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -30,19 +31,48 @@ public class CronService {
     @Scheduled(cron = "${cron.horario}")
 
     public void buscaTarefasProximaHora() {
+
         String token = login(converterParaRequestDTO());
+
         log.info("iniciada a busca de tarefas");
-        LocalDateTime horaFutura = LocalDateTime.now().plusHours(1);
-        LocalDateTime horaFuturaCinco = LocalDateTime.now().plusHours(1).plusMinutes(5);
+
+        ZoneId zoneId = ZoneId.of("America/Sao_Paulo");
+
+        LocalDateTime agora = LocalDateTime.now(zoneId)
+                .withSecond(0)
+                .withNano(0);
+
+        LocalDateTime horaFutura = agora.plusHours(1);
+
+        LocalDateTime horaFuturaCinco = horaFutura.plusMinutes(6);
+
+        log.info("agora: {}", agora);
+        log.info("horaFutura: {}", horaFutura);
+        log.info("horaFuturaCinco: {}", horaFuturaCinco);
 
         List<TarefasDTOResponse> listaTarefas =
-                tarefasService.buscarTarefasAgendadasPorPeriodo(horaFutura, horaFuturaCinco, token);
-        log.info("listaTarefas: " + listaTarefas);
+                tarefasService.buscarTarefasAgendadasPorPeriodo(
+                        horaFutura,
+                        horaFuturaCinco,
+                        token
+                );
+
+        log.info("listaTarefas tamanho: {}", listaTarefas.size());
+        log.info("listaTarefas: {}", listaTarefas);
+
         listaTarefas.forEach(tarefas -> {
+
             emailService.enviarEmail(tarefas);
-            log.info("email enviado: " + tarefas.getEmailUsuario());
-            tarefasService.alterarStatus(StatusNotificacaoEnum.NOTIFICADO, tarefas.getId(), token);
+
+            log.info("email enviado: {}", tarefas.getEmailUsuario());
+
+            tarefasService.alterarStatus(
+                    StatusNotificacaoEnum.NOTIFICADO,
+                    tarefas.getId(),
+                    token
+            );
         });
+
         log.info("finalizada a busca de tarefas");
     }
 
