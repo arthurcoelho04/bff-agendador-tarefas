@@ -34,6 +34,7 @@ public class CronService {
 
         String token = login(converterParaRequestDTO());
 
+
         log.info("iniciada a busca de tarefas");
 
         ZoneId zoneId = ZoneId.of("America/Sao_Paulo");
