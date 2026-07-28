@@ -1,9 +1,14 @@
-FROM eclipse-temurin:24-jdk
+FROM gradle:8.14-jdk21-alpine AS build
+WORKDIR /app
+COPY . .
+run gradle build --no-daemon
+
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
-COPY build/libs/bff-gendador-tarefas-0.0.1-SNAPSHOT.jar /app/bff-gendador-tarefas.jar
+COPY --from=build /app/build/libs/*.jar /app/bff-gendador-tarefas.jar
 
 EXPOSE 8083
 
-CMD ["java", "-jar", "bff-gendador-tarefas.jar"]
+CMD ["java", "-jar", "/app/bff-gendador-tarefas.jar"]
